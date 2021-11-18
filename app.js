@@ -156,7 +156,6 @@ const students = [
 		image: "assets/images/students/wiktoria-dobrzewinska.jpg",
 	},
 ];
-
 const missing_students = [
 	{
 		name: "Andjela Saponjic",
@@ -180,16 +179,39 @@ const missing_students = [
 	},
 ];
 
-// The Fisher-Yates algorith
-const shuffleArray = (array) => {
-	for (let i = array.length - 1; i > 0; i--) {
+const imageEl = document.querySelector(".studentImage");
+const buttonsEl = document.querySelector(".studentButtons");
+
+// The Fisher-Yates algorithm (shuffles arrays)
+const shuffleStudent = (students) => {
+	for (let i = students.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
-		const temp = array[i];
-		array[i] = array[j];
-		array[j] = temp;
+		const temp = students[i];
+		students[i] = students[j];
+		students[j] = temp;
 	}
 };
 
-const getName = students.name;
+getStudent = () => {
+	shuffleStudent(students);
 
-console.log(students[getName]);
+	// variable for highlighted and shuffled student
+	const student = students[0];
+	imageEl.src = student.image;
+
+	// picks out 4 students in new array
+	const chosenStudents = students.slice(0, 4);
+
+	// shuffling the four students again for making it harder to figure out a pattern
+	shuffleStudent(chosenStudents);
+
+	// picks out names from students array and saves them
+	const randomStudents = chosenStudents.map((students) => students.name);
+
+	// place names in buttons
+	randomStudents.forEach((student) => {
+		buttonsEl.innerHTML += `<button type="submit" class="optionBtn btn btn-lg text-light text-center m-2">${student}</button>;`;
+	});
+};
+
+getStudent();
