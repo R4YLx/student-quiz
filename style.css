@@ -1,0 +1,19 @@
+header {
+	background-color: #ee4266;
+}
+
+.btn {
+	background-color: #ee4266;
+}
+
+.correct {
+	background-color: green;
+}
+
+.wrong {
+	background-color: red;
+}
+
+span {
+	color: #ee4266;
+}
