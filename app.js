@@ -181,6 +181,9 @@ const missing_students = [
 
 const imageEl = document.querySelector(".studentImage");
 const buttonsEl = document.querySelector(".studentButtons");
+const scoreEl = document.querySelector(".score");
+const resultEl = document.querySelector(".scorebox");
+const getNewEl = document.querySelector("getNew");
 
 // The Fisher-Yates algorithm (shuffles arrays)
 const shuffleStudent = (students) => {
@@ -192,15 +195,18 @@ const shuffleStudent = (students) => {
 	}
 };
 
-getStudent = () => {
-	shuffleStudent(students);
+let correctStudent = "";
 
-	// variable for highlighted and shuffled student
-	const student = students[0];
-	imageEl.src = student.image;
+const getStudent = () => {
+	shuffleStudent(students);
 
 	// picks out 4 students in new array
 	const chosenStudents = students.slice(0, 4);
+
+	// variable for highlighted and shuffled student
+	correctStudent = students[0];
+	// sets image in html
+	imageEl.src = correctStudent.image;
 
 	// shuffling the four students again for making it harder to figure out a pattern
 	shuffleStudent(chosenStudents);
@@ -210,8 +216,30 @@ getStudent = () => {
 
 	// place names in buttons
 	randomStudents.forEach((student) => {
-		buttonsEl.innerHTML += `<button type="submit" class="optionBtn btn btn-lg text-light text-center m-2">${student}</button>;`;
+		buttonsEl.innerHTML += `<button class="optionBtn btn btn-lg text-light text-center m-2">${student}</button>`;
 	});
 };
 
+const getScore = () => {};
+// game starts here
 getStudent();
+
+let guesses = 0;
+
+buttonsEl.addEventListener("click", (e) => {
+	if (e.target.tagName === "BUTTON") {
+		guesses++;
+		// console.log(e.target.innerText);
+
+		if (e.target.innerText === correctStudent.name) {
+			resultEl.innerText = "Correct!";
+			console.log(e.target.innerText);
+		} else {
+			resultEl.innerText = "Wrong!";
+			console.log(e.target.innerText);
+		}
+	}
+
+	if (guesses === 10) {
+	}
+});
