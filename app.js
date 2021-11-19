@@ -1,3 +1,11 @@
+// Variables
+const imageEl = document.querySelector(".studentImage");
+const buttonsEl = document.querySelector(".studentButtons");
+const optionBtnEl = document.querySelector(".optionBtn");
+const scoreEl = document.querySelector(".score");
+const answerEl = document.querySelector(".answer");
+const getNewEl = document.querySelector("getNew");
+
 const students = [
 	{
 		name: "Adi Dzocaj",
@@ -179,12 +187,6 @@ const missing_students = [
 	},
 ];
 
-const imageEl = document.querySelector(".studentImage");
-const buttonsEl = document.querySelector(".studentButtons");
-const scoreEl = document.querySelector(".score");
-const resultEl = document.querySelector(".scorebox");
-const getNewEl = document.querySelector("getNew");
-
 // The Fisher-Yates algorithm (shuffles arrays)
 const shuffleStudent = (students) => {
 	for (let i = students.length - 1; i > 0; i--) {
@@ -195,8 +197,10 @@ const shuffleStudent = (students) => {
 	}
 };
 
+// variable for pointing out the right answer
 let correctStudent = "";
 
+// function for picking out students for one round. Adds image and four buttons
 const getStudent = () => {
 	shuffleStudent(students);
 
@@ -220,26 +224,41 @@ const getStudent = () => {
 	});
 };
 
-const getScore = () => {};
+// const getScore = () => {};
 // game starts here
 getStudent();
 
+// variable for number of guesses
 let guesses = 0;
+// variable for numbers of times user is correct
+let correctAnswers = 0;
 
+let clicked = false;
+
+// click event for buttons with students
 buttonsEl.addEventListener("click", (e) => {
 	if (e.target.tagName === "BUTTON") {
+		// adds one with each guess
 		guesses++;
 		// console.log(e.target.innerText);
+		console.log("Times guessed:", guesses);
 
 		if (e.target.innerText === correctStudent.name) {
-			resultEl.innerText = "Correct!";
-			console.log(e.target.innerText);
+			answerEl.innerText = "Your answer is: On point!";
+			// adds one point if answer is correct
+			correctAnswers++;
+			// buttonsEl.setAttribute("class", "correct");
+			// console.log(e.target.innerText);
+			console.log("Number of correct guesses", correctAnswers);
 		} else {
-			resultEl.innerText = "Wrong!";
-			console.log(e.target.innerText);
+			answerEl.innerText = "Your answer is: Disapointing....";
+			// buttonsEl.setAttribute("class", "wrong");
+			// console.log(e.target.innerText);
 		}
-	}
 
-	if (guesses === 10) {
+		// shows result after guessing student and scrolls up to top for user to see
+		scrollTo(0, 0);
+		scoreEl.querySelector("span").textContent = `${correctAnswers}/10`;
+		scoreEl.classList.remove("d-none");
 	}
 });

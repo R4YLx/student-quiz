@@ -21,7 +21,14 @@
 	<body class="bg-dark text-light">
 		<header class="text-center py-1">
 			<h1 class="display-2 my-4">Guess the student!</h1>
+			<p class="display-6 d-none score">
+				Your score: <span class="display-4"></span>
+			</p>
 		</header>
+		<section class="scorebox container text-center my-4">
+			<p class="answer">Your answer is:</p>
+			<button class="btn text-light" id="getNew">Another one!</button>
+		</section>
 		<section class="container">
 			<div class="imageHolder d-md-flex justify-content-center">
 				<img class="studentImage img-fluid my-2" src="" alt="student" />
@@ -38,14 +45,6 @@
 					justify-content-center
 				"
 			></div>
-		</section>
-
-		<section class="scorebox container text-center my-4">
-			<p></p>
-			<!-- <p class="display-6 ">
-				Your score: <span class="score display-4"></span>
-			</p> -->
-			<!-- <button class="btn" id="getNew">Another one!</button> -->
 		</section>
 		<script src="app.js"></script>
 	</body>
