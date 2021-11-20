@@ -232,10 +232,10 @@ getStudent();
 // function for showing result after 10 guesses
 const showResult = () => {
 	// shows result after guessing student and scrolls up to top for user to see
-	scrollTo(0, 0);
 	scoreEl.querySelector("span").textContent = `${correctAnswers}/10`;
 	scoreEl.classList.remove("d-none");
 	answerEl.innerText = "Wanna go for another round?";
+	quizEl.classList.add("d-none");
 	console.log("show me the result!");
 };
 
@@ -248,6 +248,7 @@ const newRound = () => {
 		guesses = 0;
 		correctAnswers = 0;
 		getNewEl.classList.add("d-none");
+		quizEl.classList.remove("d-none");
 		getStudent();
 	});
 };
@@ -259,6 +260,8 @@ let correctAnswers = 0;
 
 // click event for buttons with students
 buttonsEl.addEventListener("click", (e) => {
+	// scrolls to top of page for user to see result
+	scrollTo(0, 0);
 	if (e.target.tagName === "BUTTON") {
 		// adds one with each guess
 		guesses++;
