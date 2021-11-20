@@ -4,7 +4,8 @@ const buttonsEl = document.querySelector(".studentButtons");
 const optionBtnEl = document.querySelector(".optionBtn");
 const scoreEl = document.querySelector(".score");
 const answerEl = document.querySelector(".answer");
-const getNewEl = document.querySelector("getNew");
+const getNewEl = document.querySelector("#getNew");
+const quizEl = document.querySelector(".theQuiz");
 
 const students = [
 	{
@@ -207,13 +208,14 @@ const getStudent = () => {
 	// picks out 4 students in new array
 	const chosenStudents = students.slice(0, 4);
 
-	// variable for highlighted and shuffled student
+	// variable for student on display
 	correctStudent = students[0];
 	// sets image in html
 	imageEl.src = correctStudent.image;
 
 	// shuffling the four students again for making it harder to figure out a pattern
 	shuffleStudent(chosenStudents);
+	buttonsEl.innerHTML = "";
 
 	// picks out names from students array and saves them
 	const randomStudents = chosenStudents.map((students) => students.name);
@@ -224,16 +226,36 @@ const getStudent = () => {
 	});
 };
 
-// const getScore = () => {};
 // game starts here
 getStudent();
+
+// function for showing result after 10 guesses
+const showResult = () => {
+	// shows result after guessing student and scrolls up to top for user to see
+	scrollTo(0, 0);
+	scoreEl.querySelector("span").textContent = `${correctAnswers}/10`;
+	scoreEl.classList.remove("d-none");
+	answerEl.innerText = "Wanna go for another round?";
+	console.log("show me the result!");
+};
+
+// Another round button
+const newRound = () => {
+	getNewEl.classList.remove("d-none");
+	getNewEl.addEventListener("click", () => {
+		scoreEl.classList.add("d-none");
+		answerEl.innerText = "Your answer is:";
+		guesses = 0;
+		correctAnswers = 0;
+		getNewEl.classList.add("d-none");
+		getStudent();
+	});
+};
 
 // variable for number of guesses
 let guesses = 0;
 // variable for numbers of times user is correct
 let correctAnswers = 0;
-
-let clicked = false;
 
 // click event for buttons with students
 buttonsEl.addEventListener("click", (e) => {
@@ -249,16 +271,21 @@ buttonsEl.addEventListener("click", (e) => {
 			correctAnswers++;
 			// buttonsEl.setAttribute("class", "correct");
 			// console.log(e.target.innerText);
+			getStudent();
 			console.log("Number of correct guesses", correctAnswers);
 		} else {
 			answerEl.innerText = "Your answer is: Disapointing....";
+			getStudent();
+
 			// buttonsEl.setAttribute("class", "wrong");
 			// console.log(e.target.innerText);
 		}
 
-		// shows result after guessing student and scrolls up to top for user to see
-		scrollTo(0, 0);
-		scoreEl.querySelector("span").textContent = `${correctAnswers}/10`;
-		scoreEl.classList.remove("d-none");
+		// shows result after 10 guesses
+		if (guesses === 10) {
+			showResult();
+
+			newRound();
+		}
 	}
 });
