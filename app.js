@@ -7,6 +7,8 @@ const resultEl = document.querySelector(".result");
 const getNewEl = document.querySelector("#getNew");
 const quizEl = document.querySelector(".theQuiz");
 const answersEl = document.querySelector(".resultList");
+const cheatEl = document.querySelector(".rightAnswers");
+const scoreboxEl = document.querySelector(".scorebox");
 
 // Array with students
 const students = [
@@ -203,6 +205,8 @@ const shuffleStudent = (array) => {
 // variable for pointing out the right answer
 let currentStudent = "";
 
+let cheat = [];
+
 // function for picking out students for one round. Adds image and four buttons
 const getStudent = () => {
 	shuffleStudent(students);
@@ -267,6 +271,7 @@ buttonsEl.addEventListener("click", (e) => {
 	if (e.target.tagName === "BUTTON") {
 		// adds one with each guess
 		guesses++;
+
 		// console.log(e.target.innerText);
 		// console.log("Times guessed:", guesses);
 
@@ -280,6 +285,8 @@ buttonsEl.addEventListener("click", (e) => {
 			correctChoice(studentObj);
 		} else {
 			studentObj.correct = false;
+			// studentObj.givenChoice = e.target.innerText;
+			// studentObj.correctChoice = currentStudent.name;
 			incorrectChoice(studentObj);
 		}
 
@@ -288,13 +295,17 @@ buttonsEl.addEventListener("click", (e) => {
 			showResult();
 			newRound();
 		}
+		console.log("You clicked on:", e.target.innerHTML);
+		console.log("Correct student:", currentStudent.name);
 	}
 });
 
 // function for showing result
 const showResult = () => {
+	/*
+// This does not work properly.... please check console log.
 	// filters rights and wrongs to a list
-	answersEl.classList.remove("d-none");
+	scoreboxEl.classList.remove("d-none");
 	givenAnswers.filter((student) => {
 		if (student.correct === true) {
 			answersEl.innerHTML += `<li class="list-group-item text-center correct">${student.name}</li>`;
@@ -302,10 +313,10 @@ const showResult = () => {
 			answersEl.innerHTML += `<li class="list-group-item text-center wrong">${student.name}</li>`;
 		}
 	});
-
+*/
 	// checking if it's a new highscore
 	if (correctAnswers > highscore) {
-		highscoreEl.innerHTML = `<p class="highscore display-6">Wow! Your new highscore is: ${correctAnswers}</p>`;
+		highscoreEl.innerHTML = `<p class="highscore display-6">Well done! Your new highscore is: ${correctAnswers}</p>`;
 
 		highscore = correctAnswers;
 	} else {
@@ -331,9 +342,11 @@ const newRound = () => {
 		guesses = 0;
 		correctAnswers = 0;
 		answersEl.innerHTML = "";
+		givenAnswers = [];
+		cheatEl.innerHTML = "";
 		getNewEl.classList.add("d-none");
 		quizEl.classList.remove("d-none");
-		answersEl.classList.add("d-none");
+		scoreboxEl.classList.add("d-none");
 		getStudent();
 	});
 };

@@ -26,7 +26,7 @@
 			</p>
 			<p class="highscore"></p>
 		</header>
-		<section class="scorebox container text-center my-4">
+		<section class="container text-center my-4">
 			<p class="result"></p>
 			<button class="btn text-light d-none" id="getNew">Another round!</button>
 		</section>
@@ -47,8 +47,11 @@
 				"
 			></div>
 		</section>
-		<section class="resultList">
-			<ul class="container list-group d-none answers"></ul>
+		<section class="container scorebox d-none">
+			<h2>Your answers:</h2>
+			<ul class="container list-group resultList"></ul>
+			<h2>Correct answers:</h2>
+			<ul class="container list-group rightAnswers"></ul>
 		</section>
 		<script src="app.js"></script>
 	</body>
