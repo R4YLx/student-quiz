@@ -1,13 +1,14 @@
 // Variables
+const highscoreEl = document.querySelector(".highscore");
 const scoreEl = document.querySelector(".score");
 const imageEl = document.querySelector(".studentImage");
 const buttonsEl = document.querySelector(".studentButtons");
-const optionBtnEl = document.querySelector(".optionBtn");
-const answerEl = document.querySelector(".answer");
+const resultEl = document.querySelector(".result");
 const getNewEl = document.querySelector("#getNew");
 const quizEl = document.querySelector(".theQuiz");
-const answersEl = document.querySelector(".answers");
+const answersEl = document.querySelector(".resultList");
 
+// Array with students
 const students = [
 	{
 		name: "Adi Dzocaj",
@@ -236,12 +237,14 @@ let guesses = 0;
 let correctAnswers = 0;
 // an array for tracking the users' guesses
 let givenAnswers = [];
+// variable for keeping track of highscore
+let highscore = 0;
 
 // function for keeping track of correct guesses and pushing into new array
 const correctChoice = (studentObj) => {
 	// do all the things related to the users' correct choice
 	givenAnswers.push(studentObj);
-	answerEl.innerHTML = `<p class="answer correct">Your answer was on point!</p>`;
+	resultEl.innerHTML = `<p class="answer correct">Your answer was on point!</p>`;
 	// adds one point if answer is correct
 	correctAnswers++;
 	// console.log(e.target.innerText);
@@ -253,7 +256,7 @@ const correctChoice = (studentObj) => {
 const incorrectChoice = (studentObj) => {
 	// do all the things related to the users' incorrect choice
 	givenAnswers.push(studentObj);
-	answerEl.innerHTML = `<p class="answer wrong">Your answer was disapointing!</p>`;
+	resultEl.innerHTML = `<p class="answer wrong">Your answer was disapointing!</p>`;
 	getStudent();
 };
 
@@ -265,7 +268,7 @@ buttonsEl.addEventListener("click", (e) => {
 		// adds one with each guess
 		guesses++;
 		// console.log(e.target.innerText);
-		console.log("Times guessed:", guesses);
+		// console.log("Times guessed:", guesses);
 
 		let studentObj = {
 			name: currentStudent.name,
@@ -290,15 +293,8 @@ buttonsEl.addEventListener("click", (e) => {
 
 // function for showing result
 const showResult = () => {
-	// shows result after guessing student
-	scoreEl.querySelector("span").textContent = `${correctAnswers}/${guesses}`;
-	scoreEl.classList.remove("d-none");
-	answerEl.innerText = "Wanna go for another round?";
-	quizEl.classList.add("d-none");
-	// console.log("show me the result!");
-	console.log("givenAnswers", givenAnswers);
-
 	// filters rights and wrongs to a list
+	answersEl.classList.remove("d-none");
 	givenAnswers.filter((student) => {
 		if (student.correct === true) {
 			answersEl.innerHTML += `<li class="list-group-item text-center correct">${student.name}</li>`;
@@ -306,18 +302,38 @@ const showResult = () => {
 			answersEl.innerHTML += `<li class="list-group-item text-center wrong">${student.name}</li>`;
 		}
 	});
+
+	// checking if it's a new highscore
+	if (correctAnswers > highscore) {
+		highscoreEl.innerHTML = `<p class="highscore display-6">Wow! Your new highscore is: ${correctAnswers}</p>`;
+
+		highscore = correctAnswers;
+	} else {
+		highscoreEl.innerHTML = `<p class="highscore display-6">No new highscore. Better luck next time!</p>`;
+	}
+
+	// shows result after guessing student
+	scoreEl.querySelector("span").textContent = `${correctAnswers}/${guesses}`;
+	scoreEl.classList.remove("d-none");
+	resultEl.innerText = "Wanna go for another round?";
+	quizEl.classList.add("d-none");
+	// console.log("show me the result!");
+	// console.log("givenAnswers", givenAnswers);
 };
 
-// Another round button
+// Another round button resets all stats execpt highscore
 const newRound = () => {
 	getNewEl.classList.remove("d-none");
 	getNewEl.addEventListener("click", () => {
+		highscoreEl.innerHTML = `<p class="highscore display-6">Current highscore: ${highscore}</p>`;
 		scoreEl.classList.add("d-none");
-		answerEl.innerText = "Your answer is:";
+		resultEl.innerText = "";
 		guesses = 0;
 		correctAnswers = 0;
+		answersEl.innerHTML = "";
 		getNewEl.classList.add("d-none");
 		quizEl.classList.remove("d-none");
+		answersEl.classList.add("d-none");
 		getStudent();
 	});
 };
