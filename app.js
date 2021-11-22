@@ -236,8 +236,6 @@ let guesses = 0;
 let correctAnswers = 0;
 // an array for tracking the users' guesses
 let givenAnswers = [];
-// variable for highscore
-let highscore = false;
 
 // function for keeping track of correct guesses and pushing into new array
 const correctChoice = (studentObj) => {
@@ -297,33 +295,17 @@ const showResult = () => {
 	scoreEl.classList.remove("d-none");
 	answerEl.innerText = "Wanna go for another round?";
 	quizEl.classList.add("d-none");
-	console.log("show me the result!");
+	// console.log("show me the result!");
+	console.log("givenAnswers", givenAnswers);
 
-	const green = givenAnswers.filter((student) => {
-		student.correct === true;
-		// answersEl.innerHTML = `<li class="correct">${givenAnswers.name}</li>`;
-	});
-	const red = givenAnswers.filter((student) => {
-		student.correct === false;
-		// answersEl.innerHTML = `<li class="wrong">${givenAnswers.name}</li>`;
-	});
-
-	console.log("list of correct:", green);
-	console.log("list of wrong", red);
-
-	/*
-	givenAnswers.map((student) => {
-		let li = document.createElement("li");
-		li.innerHTML = student.name;
-		if (student.correct) {
-			li.classList.add("correct");
+	// filters rights and wrongs to a list
+	givenAnswers.filter((student) => {
+		if (student.correct === true) {
+			answersEl.innerHTML += `<li class="list-group-item text-center correct">${student.name}</li>`;
 		} else {
-			li.classList.add("wrong");
+			answersEl.innerHTML += `<li class="list-group-item text-center wrong">${student.name}</li>`;
 		}
-		answersEl.appendChild(li);
 	});
-
-	*/
 };
 
 // Another round button
