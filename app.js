@@ -1,11 +1,12 @@
 // Variables
+const scoreEl = document.querySelector(".score");
 const imageEl = document.querySelector(".studentImage");
 const buttonsEl = document.querySelector(".studentButtons");
 const optionBtnEl = document.querySelector(".optionBtn");
-const scoreEl = document.querySelector(".score");
 const answerEl = document.querySelector(".answer");
 const getNewEl = document.querySelector("#getNew");
 const quizEl = document.querySelector(".theQuiz");
+const answersEl = document.querySelector(".answers");
 
 const students = [
 	{
@@ -189,17 +190,17 @@ const missing_students = [
 ];
 
 // The Fisher-Yates algorithm (shuffles arrays)
-const shuffleStudent = (students) => {
-	for (let i = students.length - 1; i > 0; i--) {
+const shuffleStudent = (array) => {
+	for (let i = array.length - 1; i > 0; i--) {
 		const j = Math.floor(Math.random() * (i + 1));
-		const temp = students[i];
-		students[i] = students[j];
-		students[j] = temp;
+		const temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 	}
 };
 
 // variable for pointing out the right answer
-let correctStudent = "";
+let currentStudent = "";
 
 // function for picking out students for one round. Adds image and four buttons
 const getStudent = () => {
@@ -208,35 +209,121 @@ const getStudent = () => {
 	// picks out 4 students in new array
 	const chosenStudents = students.slice(0, 4);
 
-	// variable for student on display
-	correctStudent = students[0];
+	// variable for student on display/correct answer
+	currentStudent = students[0];
 	// sets image in html
-	imageEl.src = correctStudent.image;
+	imageEl.src = currentStudent.image;
 
 	// shuffling the four students again for making it harder to figure out a pattern
 	shuffleStudent(chosenStudents);
 	buttonsEl.innerHTML = "";
 
-	// picks out names from students array and saves them
-	const randomStudents = chosenStudents.map((students) => students.name);
+	// picks out names from students array and saves them in a new array
+	const chosenStudentsName = chosenStudents.map((student) => student.name);
 
 	// place names in buttons
-	randomStudents.forEach((student) => {
-		buttonsEl.innerHTML += `<button class="optionBtn btn btn-lg text-light text-center m-2">${student}</button>`;
+	chosenStudentsName.forEach((studentName) => {
+		buttonsEl.innerHTML += `<button class="optionBtn btn btn-lg text-light text-center m-2">${studentName}</button>`;
 	});
 };
 
 // game starts here
 getStudent();
 
-// function for showing result after 10 guesses
+// variable for number of guesses
+let guesses = 0;
+// variable for numbers of times user is correct
+let correctAnswers = 0;
+// an array for tracking the users' guesses
+let givenAnswers = [];
+// variable for highscore
+let highscore = false;
+
+// function for keeping track of correct guesses and pushing into new array
+const correctChoice = (studentObj) => {
+	// do all the things related to the users' correct choice
+	givenAnswers.push(studentObj);
+	answerEl.innerHTML = `<p class="answer correct">Your answer was on point!</p>`;
+	// adds one point if answer is correct
+	correctAnswers++;
+	// console.log(e.target.innerText);
+	getStudent();
+	// console.log("Number of correct guesses", correctAnswers);
+};
+
+// function for keeping track of incorrect guesses and pushing into new array
+const incorrectChoice = (studentObj) => {
+	// do all the things related to the users' incorrect choice
+	givenAnswers.push(studentObj);
+	answerEl.innerHTML = `<p class="answer wrong">Your answer was disapointing!</p>`;
+	getStudent();
+};
+
+// click event for buttons with students
+buttonsEl.addEventListener("click", (e) => {
+	// scrolls to top of page for user to see result
+	scrollTo(0, 0);
+	if (e.target.tagName === "BUTTON") {
+		// adds one with each guess
+		guesses++;
+		// console.log(e.target.innerText);
+		console.log("Times guessed:", guesses);
+
+		let studentObj = {
+			name: currentStudent.name,
+		};
+
+		// if statement divides correct and incorrect answers
+		if (e.target.innerText === currentStudent.name) {
+			studentObj.correct = true;
+			correctChoice(studentObj);
+		} else {
+			studentObj.correct = false;
+			incorrectChoice(studentObj);
+		}
+
+		// shows result after 10 guesses
+		if (guesses === 10) {
+			showResult();
+			newRound();
+		}
+	}
+});
+
+// function for showing result
 const showResult = () => {
-	// shows result after guessing student and scrolls up to top for user to see
-	scoreEl.querySelector("span").textContent = `${correctAnswers}/10`;
+	// shows result after guessing student
+	scoreEl.querySelector("span").textContent = `${correctAnswers}/${guesses}`;
 	scoreEl.classList.remove("d-none");
 	answerEl.innerText = "Wanna go for another round?";
 	quizEl.classList.add("d-none");
 	console.log("show me the result!");
+
+	const green = givenAnswers.filter((student) => {
+		student.correct === true;
+		// answersEl.innerHTML = `<li class="correct">${givenAnswers.name}</li>`;
+	});
+	const red = givenAnswers.filter((student) => {
+		student.correct === false;
+		// answersEl.innerHTML = `<li class="wrong">${givenAnswers.name}</li>`;
+	});
+
+	console.log("list of correct:", green);
+	console.log("list of wrong", red);
+
+	/*
+	givenAnswers.map((student) => {
+		let li = document.createElement("li");
+		li.innerHTML = student.name;
+		if (student.correct) {
+			li.classList.add("correct");
+		} else {
+			li.classList.add("wrong");
+		}
+		answersEl.appendChild(li);
+	});
+
+	*/
 };
 
 // Another round button
@@ -252,43 +339,3 @@ const newRound = () => {
 		getStudent();
 	});
 };
-
-// variable for number of guesses
-let guesses = 0;
-// variable for numbers of times user is correct
-let correctAnswers = 0;
-
-// click event for buttons with students
-buttonsEl.addEventListener("click", (e) => {
-	// scrolls to top of page for user to see result
-	scrollTo(0, 0);
-	if (e.target.tagName === "BUTTON") {
-		// adds one with each guess
-		guesses++;
-		// console.log(e.target.innerText);
-		console.log("Times guessed:", guesses);
-
-		if (e.target.innerText === correctStudent.name) {
-			answerEl.innerText = "Your answer is: On point!";
-			// adds one point if answer is correct
-			correctAnswers++;
-			// buttonsEl.setAttribute("class", "correct");
-			// console.log(e.target.innerText);
-			getStudent();
-			console.log("Number of correct guesses", correctAnswers);
-		} else {
-			answerEl.innerText = "Your answer is: Disapointing....";
-			getStudent();
-
-			// buttonsEl.setAttribute("class", "wrong");
-			// console.log(e.target.innerText);
-		}
-
-		// shows result after 10 guesses
-		if (guesses === 10) {
-			showResult();
-
-			newRound();
-		}
-	}
-});
