@@ -201,7 +201,7 @@ let guesses = 0;
 // variable for numbers of times user is correct
 let correctAnswers = 0;
 // an array for tracking the users' guesses
-let givenAnswersin = [];
+let givenAnswers = [];
 // variable for keeping track of highscore
 let highscore = 0;
 
