@@ -192,6 +192,21 @@ const missing_students = [
 	},
 ];
 
+// variable for pointing out the right answer
+let currentStudent = "";
+// array with all correct answers
+let cheat = [];
+// variable for number of guesses
+let guesses = 0;
+// variable for numbers of times user is correct
+let correctAnswers = 0;
+// an array for tracking the users' guesses
+let givenAnswersin = [];
+// variable for keeping track of highscore
+let highscore = 0;
+
+///////////////////////////////////////////////////////
+
 // The Fisher-Yates algorithm (shuffles arrays)
 const shuffleStudent = (array) => {
 	for (let i = array.length - 1; i > 0; i--) {
@@ -201,11 +216,6 @@ const shuffleStudent = (array) => {
 		array[j] = temp;
 	}
 };
-
-// variable for pointing out the right answer
-let currentStudent = "";
-
-let cheat = [];
 
 // function for picking out students for one round. Adds image and four buttons
 const getStudent = () => {
@@ -234,15 +244,6 @@ const getStudent = () => {
 
 // game starts here
 getStudent();
-
-// variable for number of guesses
-let guesses = 0;
-// variable for numbers of times user is correct
-let correctAnswers = 0;
-// an array for tracking the users' guesses
-let givenAnswers = [];
-// variable for keeping track of highscore
-let highscore = 0;
 
 // function for keeping track of correct guesses and pushing into new array
 const correctChoice = (studentObj) => {
@@ -303,7 +304,7 @@ buttonsEl.addEventListener("click", (e) => {
 // function for showing result
 const showResult = () => {
 	/*
-// This does not work properly.... please check console log.
+// This does not work as intended... Trying to figure it out.
 	// filters rights and wrongs to a list
 	scoreboxEl.classList.remove("d-none");
 	givenAnswers.filter((student) => {
