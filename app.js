@@ -7,7 +7,6 @@ const resultEl = document.querySelector(".result");
 const getNewEl = document.querySelector("#getNew");
 const quizEl = document.querySelector(".theQuiz");
 const answersEl = document.querySelector(".resultList");
-const cheatEl = document.querySelector(".rightAnswers");
 const scoreboxEl = document.querySelector(".scorebox");
 
 // Array with students
@@ -194,8 +193,6 @@ const missing_students = [
 
 // variable for pointing out the right answer
 let currentStudent = "";
-// array with all correct answers
-let cheat = [];
 // variable for number of guesses
 let guesses = 0;
 // variable for numbers of times user is correct
@@ -240,6 +237,8 @@ const getStudent = () => {
 	chosenStudentsName.forEach((studentName) => {
 		buttonsEl.innerHTML += `<button class="optionBtn btn btn-lg text-light text-center m-2">${studentName}</button>`;
 	});
+
+	// console.log(currentStudent);
 };
 
 // game starts here
@@ -278,17 +277,20 @@ buttonsEl.addEventListener("click", (e) => {
 
 		let studentObj = {
 			name: currentStudent.name,
+			image: currentStudent.image,
 		};
 
 		// if statement divides correct and incorrect answers
 		if (e.target.innerText === currentStudent.name) {
 			studentObj.correct = true;
 			correctChoice(studentObj);
+			// console.log(studentObj);
 		} else {
 			studentObj.correct = false;
 			// studentObj.givenChoice = e.target.innerText;
 			// studentObj.correctChoice = currentStudent.name;
 			incorrectChoice(studentObj);
+			// console.log(studentObj);
 		}
 
 		// shows result after 10 guesses
@@ -296,25 +298,26 @@ buttonsEl.addEventListener("click", (e) => {
 			showResult();
 			newRound();
 		}
-		console.log("You clicked on:", e.target.innerHTML);
-		console.log("Correct student:", currentStudent.name);
+		// console.log("You clicked on:", e.target.innerHTML);
+		// console.log("Correct student:", currentStudent.name);
 	}
 });
 
 // function for showing result
 const showResult = () => {
-	/*
-// This does not work as intended... Trying to figure it out.
-	// filters rights and wrongs to a list
+	// filters out the wrong given answers and displays correct name with correct image
 	scoreboxEl.classList.remove("d-none");
 	givenAnswers.filter((student) => {
-		if (student.correct === true) {
-			answersEl.innerHTML += `<li class="list-group-item text-center correct">${student.name}</li>`;
-		} else {
-			answersEl.innerHTML += `<li class="list-group-item text-center wrong">${student.name}</li>`;
+		if (student.correct === false) {
+			answersEl.innerHTML += `<div class="card" style="width: 18rem;">
+			<img src="${student.image}" class="card-img-top" alt="student">
+			<div class="card-body">
+			  <p class="card-text wrong text-center">${student.name}</p>
+			</div>
+		  </div>`;
 		}
 	});
-*/
+
 	// checking if it's a new highscore
 	if (correctAnswers > highscore) {
 		highscoreEl.innerHTML = `<p class="highscore display-6">Well done! Your new highscore is: ${correctAnswers}</p>`;
@@ -344,7 +347,6 @@ const newRound = () => {
 		correctAnswers = 0;
 		answersEl.innerHTML = "";
 		givenAnswers = [];
-		cheatEl.innerHTML = "";
 		getNewEl.classList.add("d-none");
 		quizEl.classList.remove("d-none");
 		scoreboxEl.classList.add("d-none");
