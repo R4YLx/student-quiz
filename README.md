@@ -4,7 +4,7 @@ Created a [guessing game](https://rays-student-quiz.netlify.app) based on classm
 - HTML
 - CSS
 - Vanilla JavaScript
-- Bootstrap
+- Bootstrap 5
 
 
 ## Table of contents
