@@ -10,7 +10,7 @@ Created a [guessing game](https://rays-student-quiz.netlify.app) based on classm
 ## Table of contents
 * [Assignment](#assignment)
 * [Tools](#tools)
-* Screenshot
+* [Screenshot](#screenshot)
 
 ## Assignment
 Create a game where you try to guess your classmate.
