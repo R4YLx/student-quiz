@@ -41,4 +41,4 @@ An array with students where provided by our teacher and we where not allowed to
 
 
 ## Screenshot
-![Guess the student](https://github.com/R4YLx/student-quiz/blob/main/assets/images/gts-screenshot.png)
+<img src="https://github.com/R4YLx/student-quiz/blob/main/assets/images/gts-screenshot.png" width=50% height=50%>
