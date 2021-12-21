@@ -22,15 +22,15 @@ The place of the correct name should be randomized, not the image.
 An array with students where provided by our teacher and we where not allowed to change anything in it.
 
 ### The game MUST:
-- Have responive design (Mobile First) with aleast 2 breakpoints
-- Have semantic code
-- Include CSS flexbox or grid
-- Have a section with result after game is played
+- have responive design (Mobile First) with aleast 2 breakpoints
+- have semantic code
+- include CSS flexbox or grid
+- have a section with result after game is played
 
 ### I opted to:
-- Randomize both names and images for each round.
-- Show correct and incorrect answers at the end of the game.
-- Keep track of highscore
+- randomize both names and images for each round.
+- show correct and incorrect answers at the end of the game.
+- keep track of highscore
 
 #### Time limit
 - 2 weeks
